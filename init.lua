@@ -18,7 +18,7 @@ vim.opt.rtp:prepend(lazypath)
 require("options")
 
 require("lazy").setup({
-  { import = "plugins.nvim-tree" },
+  { import = "plugins.nvim-tree", lazy=false},
 	{ import = "plugins.cmp" },
 	{ import = "plugins.ui" },
 	{ import = "plugins.lspconfig" },
@@ -49,8 +49,8 @@ vim.cmd("syntax on")
 
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 
--- vim.wo.number = true            -- Absolute Zeilennummern anzeigen
--- vim.wo.relativenumber = true    -- Relative Zeilennummern anzeigen
+vim.wo.number = true            -- Absolute Zeilennummern anzeigen
+vim.wo.relativenumber = true    -- Relative Zeilennummern anzeigen
 
 -- vim.o.showtabline = 0
 -- vim.opt_local.expandtab = false
@@ -71,4 +71,9 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.softtabstop = 2      -- Verhalten bei Backspace etc.
   end,
 })
+
+vim.keymap.set('n', '<S-l>', ':BufferLineCycleNext<CR>', { desc = 'Nächster Buffer' })
+vim.keymap.set('n', '<S-h>', ':BufferLineCyclePrev<CR>', { desc = 'Vorheriger Buffer' })
+
+vim.keymap.set('t', '<C-t>', [[<C-\><C-n>]], { desc = 'Terminal: Zurück in den Normal Mode' })
 
