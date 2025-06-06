@@ -39,7 +39,7 @@ require("lazy").setup({
     config = function()
       require("nvim-treesitter.configs").setup({
         highlight = { enable = true },
-        ensure_installed = { "typescript", "tsx", "javascript", "json", "html", "css" },
+        ensure_installed = { "typescript", "tsx", "javascript", "json", "html", "css", "java" },
       })
     end,
   },
@@ -64,7 +64,7 @@ vim.wo.relativenumber = true    -- Relative Zeilennummern anzeigen
 -- vim.bo.expandtab = true  -- Tabs in Leerzeichen umwandeln
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+  pattern = { "typescript", "typescriptreact", "javascript", "javascriptreact", "java" },
   callback = function()
     vim.bo.expandtab = true     -- Tabs = Spaces
     vim.bo.tabstop = 2          -- Sichtbare Breite eines Tabs
@@ -90,3 +90,41 @@ vim.diagnostic.config({
 })
 
 vim.cmd("colorscheme catppuccin")
+
+-- java run command
+-- In deiner init.lua
+vim.api.nvim_create_user_command('RunJavaFileClean', function()
+  local current_buffer_path = vim.fn.expand('%:p')
+
+  if not current_buffer_path or not current_buffer_path:match('%.java$') then
+    vim.api.nvim_err_writeln('Dies ist keine Java-Datei.')
+    return
+  end
+
+  local file_dir = vim.fn.expand('%:h')
+  local file_name_only = vim.fn.expand('%:t') -- Dateiname mit .java
+
+  -- Sicherstellen, dass file_dir absolut ist
+  file_dir = vim.fn.fnamemodify(file_dir, ':p')
+
+  -- Befehl zusammenstellen (nur 'java', kein 'javac' mehr)
+  local command_to_run = table.concat({
+    'cd ' .. vim.fn.shellescape(file_dir),
+    '&&',
+    'java ' .. vim.fn.shellescape(file_name_only) -- Führt die .java-Datei direkt aus
+  }, ' ')
+
+  -- Öffnet das Terminal in einem neuen vertikalen Split ganz rechts
+  vim.cmd('botright vertical split | terminal ' .. command_to_run)
+  vim.api.nvim_echo({{'Java-Datei direkt ausgeführt (ohne .class-Datei).'},}, false, {})
+end, {
+  desc = "Führt die aktuelle Java-Datei direkt aus (ab Java 11, ohne .class-Datei)",
+})
+
+-- Aktualisiertes Tastenkürzel
+vim.keymap.set('n', '<leader>rj', '<Cmd>RunJavaFileClean<CR>', {
+  noremap = true,
+  silent = true,
+  desc = "Führe aktuelle Java-Datei sauber aus (ab Java 11)"
+})
+
