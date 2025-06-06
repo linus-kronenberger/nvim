@@ -9,7 +9,7 @@ return {
           mode = "buffers",
           show_buffer_close_icons = false,
           show_close_icon = false,
-          separator_style = "slant", -- oder "thin", "padded_slant", etc.
+          separator_style = "thick", -- oder "thin", "padded_slant", etc. 
         },
       })
     end,

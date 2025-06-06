@@ -19,10 +19,12 @@ require("options")
 
 require("lazy").setup({
   { import = "plugins.nvim-tree", lazy=false},
-	{ import = "plugins.cmp" },
-	{ import = "plugins.ui" },
+  { import = "plugins.tabby"},
+  { import = "plugins.buffer-admin"},
+  { import = "plugins.cmp" },
 	{ import = "plugins.lspconfig" },
 	{ import = "plugins.autopairs" },
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 	{
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -30,7 +32,6 @@ require("lazy").setup({
       require('lualine').setup()
     end
   },
-  { import = "plugins.colors" }, 
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
@@ -73,7 +74,19 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.keymap.set('n', '<S-l>', ':BufferLineCycleNext<CR>', { desc = 'Nächster Buffer' })
+
 vim.keymap.set('n', '<S-h>', ':BufferLineCyclePrev<CR>', { desc = 'Vorheriger Buffer' })
 
 vim.keymap.set('t', '<C-t>', [[<C-\><C-n>]], { desc = 'Terminal: Zurück in den Normal Mode' })
 
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+
+vim.diagnostic.config({
+  virtual_text = true,
+})
+
+vim.cmd("colorscheme catppuccin")
