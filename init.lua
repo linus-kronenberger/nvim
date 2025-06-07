@@ -18,6 +18,12 @@ vim.opt.rtp:prepend(lazypath)
 require("options")
 
 require("lazy").setup({
+  {
+    "brianhuster/autosave.nvim",
+    lazy=false,
+    event="InsertEnter",
+    opts = {} -- Configuration here
+  },
   { import = "plugins.nvim-tree", lazy=false},
   { import = "plugins.tabby"},
   { import = "plugins.buffer-admin"},
