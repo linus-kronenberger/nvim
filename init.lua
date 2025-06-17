@@ -82,6 +82,7 @@ require("lazy").setup({
 vim.cmd("syntax on")
 
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "ö", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 
 vim.wo.number = true            -- Absolute Zeilennummern anzeigen
 vim.wo.relativenumber = true    -- Relative Zeilennummern anzeigen
